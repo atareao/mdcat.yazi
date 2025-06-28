@@ -2,7 +2,7 @@ local M = {}
 
 function M:peek(job)
     local child = Command("mdcat")
-        :args({
+        :arg({
             "--columns",
             tostring(job.area.w),
             tostring(job.file.url),
@@ -34,9 +34,14 @@ function M:peek(job)
 
     child:start_kill()
     if job.skip > 0 and i < job.skip + limit then
-        ya.manager_emit("peek", { math.max(0, i - limit), only_if = job.file.url, upper_bound = true })
+        ya.manager_emit("peek", { 
+                math.max(0, i - limit), 
+                only_if = job.file.url, 
+                upper_bound = true,
+        })
     else
-        lines = lines:gsub("\t", string.rep(" ", PREVIEW.tab_size))
+        local tab_size = tonumber(job.tab_size) or 4
+        lines = lines:gsub("\t", string.rep(" ", tab_size))
         ya.preview_widgets(job, { ui.Text.parse(lines):area(job.area) })
     end
 end
