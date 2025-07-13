@@ -2,11 +2,11 @@ local M = {}
 
 function M:peek(job)
     local child = Command("mdcat")
-        :arg({
+        :arg {
             "--columns",
             tostring(job.area.w),
             tostring(job.file.url),
-        })
+        }
         :env("CLICOLOR_FORCE", "1")
         :stdout(Command.PIPED)
         :stderr(Command.PIPED)
